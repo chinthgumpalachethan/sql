@@ -1,0 +1,239 @@
+MariaDB [chethan]> insert into sales values('1','product 1','10.56','4','march'),('2','product 2','10.56','5','april'),('3','product 3','10.56','2','may'),('4','product 4','14.50','8','march'),('5','product 5','14.50','6','april'),('6','product 6','14.50','4','may')
+;
+Query OK, 6 rows affected (0.056 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+MariaDB [chethan]> desc sales;
++----------+---------------+------+-----+---------+-------+
+| Field    | Type          | Null | Key | Default | Extra |
++----------+---------------+------+-----+---------+-------+
+| ID       | int(11)       | NO   | PRI | NULL    |       |
+| product  | varchar(10)   | YES  |     | NULL    |       |
+| price    | decimal(10,3) | YES  |     | NULL    |       |
+| quantity | int(11)       | YES  |     | NULL    |       |
+| month    | varchar(15)   | YES  |     | NULL    |       |
++----------+---------------+------+-----+---------+-------+
+5 rows in set (0.021 sec)
+
+MariaDB [chethan]> select*from sales;
++----+-----------+--------+----------+-------+
+| ID | product   | price  | quantity | month |
++----+-----------+--------+----------+-------+
+|  1 | product 1 | 10.560 |        4 | march |
+|  2 | product 2 | 10.560 |        5 | april |
+|  3 | product 3 | 10.560 |        2 | may   |
+|  4 | product 4 | 14.500 |        8 | march |
+|  5 | product 5 | 14.500 |        6 | april |
+|  6 | product 6 | 14.500 |        4 | may   |
++----+-----------+--------+----------+-------+
+6 rows in set (0.000 sec)
+
+MariaDB [chethan]> select product,price,quantity from sales where month in('march','april','may')group by product,price having quanti
+ty <5;
++-----------+--------+----------+
+| product   | price  | quantity |
++-----------+--------+----------+
+| product 1 | 10.560 |        4 |
+| product 3 | 10.560 |        2 |
+| product 6 | 14.500 |        4 |
++-----------+--------+----------+
+3 rows in set (0.001 sec)
+
+MariaDB [chethan]> create table names(
+    -> first_name varchar(20),
+    -> last_name varchar(15)
+    -> );
+Query OK, 0 rows affected (0.039 sec)
+
+MariaDB [chethan]> insert int names values('ram','mohan'),('pravee','kumar'),('abhi','ram'),('varun','sai'),('sai','ram');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'int names values('ram','mohan'),('pravee','kumar'),('abhi','ram'),('varun','s...' at line 1
+MariaDB [chethan]> insert into names values('ram','mohan'),('pravee','kumar'),('abhi','ram'),('varun','sai'),('sai','ram');
+Query OK, 5 rows affected (0.013 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [chethan]> desc names;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| first_name | varchar(20) | YES  |     | NULL    |       |
+| last_name  | varchar(15) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+2 rows in set (0.024 sec)
+
+MariaDB [chethan]> select*from names;
++------------+-----------+
+| first_name | last_name |
++------------+-----------+
+| ram        | mohan     |
+| pravee     | kumar     |
+| abhi       | ram       |
+| varun      | sai       |
+| sai        | ram       |
++------------+-----------+
+5 rows in set (0.000 sec)
+
+MariaDB [chethan]> select first_name,last_name from names where last_name like '%r%';
++------------+-----------+
+| first_name | last_name |
++------------+-----------+
+| pravee     | kumar     |
+| abhi       | ram       |
+| sai        | ram       |
++------------+-----------+
+3 rows in set (0.000 sec)
+
+MariaDB [chethan]> select product,price,quantity from sales where month in('march','april','may')group by product,price having quantity >5;
++-----------+--------+----------+
+| product   | price  | quantity |
++-----------+--------+----------+
+| product 4 | 14.500 |        8 |
+| product 5 | 14.500 |        6 |
++-----------+--------+----------+
+2 rows in set (0.001 sec)
+
+MariaDB [chethan]> alter table names
+    -> rename to titanic_dc;
+Query OK, 0 rows affected (0.019 sec)
+
+MariaDB [chethan]> insert into taitanic_dc values('ram','mohan'),('kundhan','kumar'),('abhi','ram'),('varun','sai'),('sai','ram');
+ERROR 1146 (42S02): Table 'chethan.taitanic_dc' doesn't exist
+MariaDB [chethan]> create table taitanic_dc(
+    -> first_name varchar(20),
+    -> last_name varchar(15)
+    -> );
+Query OK, 0 rows affected (0.044 sec)
+
+MariaDB [chethan]> insert into names taitanic_dc('ram','mohan'),('pravee','kumar'),('abhi','ram'),('varun','sai'),('sai','ram');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'taitanic_dc('ram','mohan'),('pravee','kumar'),('abhi','ram'),('varun','sai'),...' at line 1
+MariaDB [chethan]> insert into taitanic_dc values('ram','mohan'),('pravee','kumar'),('abhi','ram'),('varun','sai'),('sai','ram');
+Query OK, 5 rows affected (0.013 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [chethan]> select first_name,last_name from titanic_dc first_name like '%u%';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'like '%u%'' at line 1
+MariaDB [chethan]> select first_name,last_name from titanic_dc where first_name like '%u%';
++------------+-----------+
+| first_name | last_name |
++------------+-----------+
+| varun      | sai       |
++------------+-----------+
+1 row in set (0.001 sec)
+
+MariaDB [chethan]> create table bank_inventory_pricing(productID int primary key,product_name varchar(15),price decimal(10,4),quantity int
+    -> create table bank_inventory_pricing(productID int primary key,product_name varchar(15),price decimal(10,4),quantity int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'create table bank_inventory_pricing(productID int primary key,product_name va...' at line 2
+MariaDB [chethan]> create table bank_inventory_pricing(productID int primary key,product_name varchar(15),price decimal(10,4),quantity int);
+Query OK, 0 rows affected (0.046 sec)
+
+MariaDB [chethan]> insert into bank_inventory_pricing('1','product 1','210.30','115'),('2','product 2','215.30','100'),('3','product 3','220.30','150'),('4','product 4','250.50','85');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ''1','product 1','210.30','115'),('2','product 2','215.30','100'),('3','produc...' at line 1
+MariaDB [chethan]> insert into bank_inventory_pricing values('1','product 1','210.30','115'),('2','product 2','215.30','100'),('3','product 3','220.30','150'),('4','product 4','250.50','85');
+Query OK, 4 rows affected (0.012 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [chethan]> desc bank_inventory_pricing;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| productID    | int(11)       | NO   | PRI | NULL    |       |
+| product_name | varchar(15)   | YES  |     | NULL    |       |
+| price        | decimal(10,4) | YES  |     | NULL    |       |
+| quantity     | int(11)       | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+4 rows in set (0.024 sec)
+
+MariaDB [chethan]> select*from bank_inventory_pricing where price between 220 and 300;
++-----------+--------------+----------+----------+
+| productID | product_name | price    | quantity |
++-----------+--------------+----------+----------+
+|         3 | product 3    | 220.3000 |      150 |
+|         4 | product 4    | 250.5000 |       85 |
++-----------+--------------+----------+----------+
+2 rows in set (0.000 sec)
+
+MariaDB [chethan]> create table salesdata(
+    -> product varcher(20),
+    -> quantity int
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(20),
+quantity int' at line 2
+MariaDB [chethan]> create table salesdata(
+    -> product varcher(20),
+    -> quantity int,
+    -> month varcher,
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(20),
+quantity int,
+month varcher,' at line 2
+MariaDB [chethan]> create table salesdata(
+    -> product varchar(20),
+    -> quantity int,
+    -> month varchar,
+    -> estimated_sales_price varchar(;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '
+estimated_sales_price varchar(' at line 4
+MariaDB [chethan]> create table salesdata(
+    -> product varchar(20),
+    -> quantity int,
+    -> month varchar(15),
+    ->
+    -> estimated_sales_price varchar(10),
+    -> purchase_cost int
+    -> );
+Query OK, 0 rows affected (0.048 sec)
+
+MariaDB [chethan]> create table salesdata(
+    -> product varchar(20),
+    -> quantity int,
+    -> month varchar(15),
+    -> estimated_sales_price decimal(10,4),
+    -> purchase_cost decimal(20,4)
+    -> );
+ERROR 1050 (42S01): Table 'salesdata' already exists
+MariaDB [chethan]> desc salesdata;
++-----------------------+-------------+------+-----+---------+-------+
+| Field                 | Type        | Null | Key | Default | Extra |
++-----------------------+-------------+------+-----+---------+-------+
+| product               | varchar(20) | YES  |     | NULL    |       |
+| quantity              | int(11)     | YES  |     | NULL    |       |
+| month                 | varchar(15) | YES  |     | NULL    |       |
+| estimated_sales_price | varchar(10) | YES  |     | NULL    |       |
+| purchase_cost         | int(11)     | YES  |     | NULL    |       |
++-----------------------+-------------+------+-----+---------+-------+
+5 rows in set (0.023 sec)
+
+MariaDB [chethan]> insert into salesdata vlaues('product 1','100','january','150.10','120.10');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'vlaues('product 1','100','january','150.10','120.10')' at line 1
+MariaDB [chethan]> drop table salesdata;
+Query OK, 0 rows affected (0.041 sec)
+
+MariaDB [chethan]> create table salesdata(
+    -> product varchar(20),
+    -> quantity int,
+    -> month varchar(15),
+    -> estimated_sales_price decimal(10,4),
+    -> purchase_cost decimal(20,4)
+    -> );
+Query OK, 0 rows affected (0.040 sec)
+
+MariaDB [chethan]> insert into salesdata vlaues('product 1','100','january','150.10','120.10'),('product 2','50','january','80.00','75.10'),('product 3','80','february','140.00','125.00'),('product 4','120','february','200.10','180.50');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'vlaues('product 1','100','january','150.10','120.10'),('product 2','50','janu...' at line 1
+MariaDB [chethan]> insert into salesdata values('product 1','100','january','150.10','120.10'),('product 2','50','january','80.00','75.10'),('product 3','80','february','140.00','125.00'),('product 4','120','february','200.10','180.50');
+Query OK, 4 rows affected (0.012 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [chethan]> select*from salesdata;
++-----------+----------+----------+-----------------------+---------------+
+| product   | quantity | month    | estimated_sales_price | purchase_cost |
++-----------+----------+----------+-----------------------+---------------+
+| product 1 |      100 | january  |              150.1000 |      120.1000 |
+| product 2 |       50 | january  |               80.0000 |       75.1000 |
+| product 3 |       80 | february |              140.0000 |      125.0000 |
+| product 4 |      120 | february |              200.1000 |      180.5000 |
++-----------+----------+----------+-----------------------+---------------+
+4 rows in set (0.000 sec)
+
+MariaDB [chethan]> select product,quantity,month,count(*) as recordcount from salesdata where estimated_sales_price<purchase_cost group by product quantity month;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'quantity month' at line 1
+MariaDB [chethan]> select product,quantity,month,count(*) as recordcount from salesdata where estimated_sales_price<purchase_cost group by product,quantity,month;
+Empty set (0.001 sec)
